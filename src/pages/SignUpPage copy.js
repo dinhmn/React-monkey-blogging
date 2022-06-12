@@ -11,9 +11,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth, db } from "firebase-app/firebase-config";
-import { addDoc, collection } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { auth } from "firebase-app/firebase-config";
 
 const SignupPageStyles = styled.div`
   padding: 40px;
@@ -47,7 +45,6 @@ const schema = yup.object({
 });
 
 const SignUpPage = () => {
-  const navigate = useNavigate();
   const {
     control,
     handleSubmit,
@@ -59,20 +56,14 @@ const SignUpPage = () => {
     resolver: yupResolver(schema),
   });
   const handleSignUp = async (values) => {
-    console.log(values);
     if (!isValid) return;
-    await createUserWithEmailAndPassword(auth, values.email, values.password);
-    await updateProfile(auth.currentUser, {
-      displayName: values.fullname,
-    });
-    const colRef = collection(db, "users");
-    await addDoc(colRef, {
-      fullname: values.fullname,
-      email: values.email,
-      password: values.password,
-    });
-    toast.success("Register successfully!!!");
-    navigate("/");
+    const user = await createUserWithEmailAndPassword(
+      auth,
+      values.email,
+      values.password
+    );
+    await updateProfile(auth.currentUser, { displayName: values.fullname });
+    toast.success("Create user successfully!!!");
   };
   const [togglePassword, setTogglePassword] = useState(false);
   useEffect(() => {
@@ -80,16 +71,22 @@ const SignUpPage = () => {
     if (arrayErrors.length > 0) {
       toast.error(arrayErrors[0]?.message, {
         pauseOnHover: false,
-        delay: 0,
+        delay: 100,
       });
     }
   });
   return (
     <SignupPageStyles>
       <div>
-        <img srcSet="/logo.png" alt="monkey-blogging" className="logo" />
+        <img
+          srcSet="/logo.png"
+          alt="monkey-blogging"
+          className="logo"
+          autoComplete="off"
+        />
         <h1 className="heading">Monkey Blogging</h1>
         <form
+          action=""
           className="form"
           onSubmit={handleSubmit(handleSignUp)}
           autoComplete="off"

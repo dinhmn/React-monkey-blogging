@@ -2,14 +2,14 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+
 const firebaseConfig = {
-  apiKey: "AIzaSyBivNNxWFjq9t1Lp41dpn5RcSiDZk4oX08",
-  authDomain: "monkey-blogging-9835e.firebaseapp.com",
-  projectId: "monkey-blogging-9835e",
-  storageBucket: "monkey-blogging-9835e.appspot.com",
-  messagingSenderId: "226141349838",
-  appId: "1:226141349838:web:230b663a35d96340a7ed9f",
-  measurementId: "G-0Q9XTE03JM",
+  apiKey: "AIzaSyBMuQQYgVeA7vLp7RohLYiXg2UzYEo4vps",
+  authDomain: "monkey-blogging-35109.firebaseapp.com",
+  projectId: "monkey-blogging-35109",
+  storageBucket: "monkey-blogging-35109.appspot.com",
+  messagingSenderId: "67014682655",
+  appId: "1:67014682655:web:dc77283a4fbfde2ea20d2a",
 };
 
 // Initialize Firebase
