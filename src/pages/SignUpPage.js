@@ -13,26 +13,8 @@ import { toast } from "react-toastify";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, db } from "firebase-app/firebase-config";
 import { addDoc, collection } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
-
-const SignupPageStyles = styled.div`
-  padding: 40px;
-  .logo {
-    margin: 0 auto 20px;
-    width: 150px;
-  }
-  .heading {
-    text-align: center;
-    color: ${(props) => props.theme.primary};
-    font-weight: bold;
-    font-size: 40px;
-    margin-bottom: 60px;
-  }
-  .form {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-`;
+import { NavLink, useNavigate } from "react-router-dom";
+import AuthenticationPage from "./AuthenticationPage";
 
 const schema = yup.object({
   fullname: yup.string().required("Please enter your fullname"),
@@ -83,12 +65,13 @@ const SignUpPage = () => {
         delay: 0,
       });
     }
+  }, [errors]);
+  useEffect(() => {
+    document.title = "Register Page";
   });
   return (
-    <SignupPageStyles>
+    <AuthenticationPage>
       <div>
-        <img srcSet="/logo.png" alt="monkey-blogging" className="logo" />
-        <h1 className="heading">Monkey Blogging</h1>
         <form
           className="form"
           onSubmit={handleSubmit(handleSignUp)}
@@ -141,6 +124,10 @@ const SignUpPage = () => {
               )}
             </Input>
           </Field>
+          <div className="have-account">
+            You already have an account?{" "}
+            <NavLink to={"/sign-in"}>Login</NavLink>{" "}
+          </div>
           <Button
             type="submit"
             disabled={isSummitting}
@@ -151,7 +138,7 @@ const SignUpPage = () => {
           </Button>
         </form>
       </div>
-    </SignupPageStyles>
+    </AuthenticationPage>
   );
 };
 
