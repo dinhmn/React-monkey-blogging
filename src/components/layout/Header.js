@@ -1,4 +1,5 @@
 import { Button } from "components/button";
+import { useAuth } from "contexts/auth-context";
 import React from "react";
 import styled from "styled-components";
 const menuLinks = [
@@ -45,6 +46,7 @@ const HeaderStyles = styled.header`
     display: flex;
     align-items: center;
     position: relative;
+    margin-right: 20px;
   }
   .search-input {
     flex: 1;
@@ -61,7 +63,14 @@ const HeaderStyles = styled.header`
   }
 `;
 
+function getLastName(name) {
+  if (!name) return "User";
+  const length = name.split(" ").length;
+  return name.split(" ")[length - 1];
+}
+
 const Header = () => {
+  const { userInfo } = useAuth();
   return (
     <HeaderStyles>
       <div className="container">
@@ -113,12 +122,23 @@ const Header = () => {
               </svg>
             </div>
           </div>
-          <Button
-            style={{ maxWidth: "200px", maxHeight: "50px" }}
-            className="header-button"
-          >
-            Sign up
-          </Button>
+          {!userInfo ? (
+            <Button
+              type="button"
+              style={{ maxWidth: "200px", maxHeight: "50px" }}
+              className="header-button"
+              to="/sign-up"
+            >
+              Sign up
+            </Button>
+          ) : (
+            <div className="header-auth">
+              <span>Welcome back, </span>
+              <strong className="text-primary">
+                {getLastName(userInfo?.displayName)}
+              </strong>
+            </div>
+          )}
         </div>
       </div>
     </HeaderStyles>

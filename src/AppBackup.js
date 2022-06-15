@@ -27,7 +27,7 @@ const CategoryUpdate = React.lazy(() =>
 const DashboardLayout = React.lazy(() =>
   import("module/dashboard/DashboardLayout")
 );
-const SignUpPage = React.lazy(() => import("./pages/SignUpPage"));
+const SignUpPage = React.lazy(() => import("./pages/SignUpPage2"));
 
 function App() {
   return (

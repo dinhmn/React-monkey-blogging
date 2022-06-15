@@ -11,26 +11,10 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "firebase-app/firebase-config";
-
-const SignupPageStyles = styled.div`
-  padding: 40px;
-  .logo {
-    margin: 0 auto 20px;
-    width: 150px;
-  }
-  .heading {
-    text-align: center;
-    color: ${(props) => props.theme.primary};
-    font-weight: bold;
-    font-size: 40px;
-    margin-bottom: 60px;
-  }
-  .form {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-`;
+import { auth, db } from "firebase-app/firebase-config";
+import { addDoc, collection } from "firebase/firestore";
+import { NavLink, useNavigate } from "react-router-dom";
+import AuthenticationPage from "./AuthenticationPage";
 
 const schema = yup.object({
   fullname: yup.string().required("Please enter your fullname"),
@@ -45,6 +29,7 @@ const schema = yup.object({
 });
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
   const {
     control,
     handleSubmit,
@@ -56,14 +41,20 @@ const SignUpPage = () => {
     resolver: yupResolver(schema),
   });
   const handleSignUp = async (values) => {
+    console.log(values);
     if (!isValid) return;
-    const user = await createUserWithEmailAndPassword(
-      auth,
-      values.email,
-      values.password
-    );
-    await updateProfile(auth.currentUser, { displayName: values.fullname });
-    toast.success("Create user successfully!!!");
+    await createUserWithEmailAndPassword(auth, values.email, values.password);
+    await updateProfile(auth.currentUser, {
+      displayName: values.fullname,
+    });
+    const colRef = collection(db, "users");
+    await addDoc(colRef, {
+      fullname: values.fullname,
+      email: values.email,
+      password: values.password,
+    });
+    toast.success("Register successfully!!!");
+    navigate("/");
   };
   const [togglePassword, setTogglePassword] = useState(false);
   useEffect(() => {
@@ -71,22 +62,17 @@ const SignUpPage = () => {
     if (arrayErrors.length > 0) {
       toast.error(arrayErrors[0]?.message, {
         pauseOnHover: false,
-        delay: 100,
+        delay: 0,
       });
     }
+  }, [errors]);
+  useEffect(() => {
+    document.title = "Register Page";
   });
   return (
-    <SignupPageStyles>
+    <AuthenticationPage>
       <div>
-        <img
-          srcSet="/logo.png"
-          alt="monkey-blogging"
-          className="logo"
-          autoComplete="off"
-        />
-        <h1 className="heading">Monkey Blogging</h1>
         <form
-          action=""
           className="form"
           onSubmit={handleSubmit(handleSignUp)}
           autoComplete="off"
@@ -138,6 +124,10 @@ const SignUpPage = () => {
               )}
             </Input>
           </Field>
+          <div className="have-account">
+            You already have an account?{" "}
+            <NavLink to={"/sign-in"}>Login</NavLink>{" "}
+          </div>
           <Button
             type="submit"
             disabled={isSummitting}
@@ -148,7 +138,7 @@ const SignUpPage = () => {
           </Button>
         </form>
       </div>
-    </SignupPageStyles>
+    </AuthenticationPage>
   );
 };
 
