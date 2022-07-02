@@ -5,6 +5,7 @@ import styled from "styled-components";
 const HomeBannerStyles = styled.div`
   min-height: 520px;
   padding: 40px 0;
+  margin-bottom: 50px;
   background-image: linear-gradient(
     to right bottom,
     ${(props) => props.theme.primary},
@@ -29,10 +30,10 @@ const HomeBannerStyles = styled.div`
   }
 `;
 
-const HomeBanner = () => {
+const HomeBanner = ({ className = "" }) => {
   return (
     <HomeBannerStyles>
-      <div className="container">
+      <div className={`container ${className}`}>
         <div className="banner">
           <div className="banner-content">
             <h1 className="banner-heading">Monkey Blogging</h1>

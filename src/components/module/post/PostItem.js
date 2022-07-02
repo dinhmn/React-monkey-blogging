@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import PostCategory from "./PostCategory";
+import PostTitle from "./PostTitle";
 const PostItemStyles = styled.div`
   display: flex;
   flex-direction: column;
@@ -18,13 +20,6 @@ const PostItemStyles = styled.div`
       }
     }
     &-category {
-      display: inline-block;
-      padding: 8px;
-      border-radius: 8px;
-      color: #6b6b6b;
-      font-size: 14px;
-      font-weight: 600;
-      background-color: #f3edff;
       margin-bottom: 16px;
     }
     &-info {
@@ -44,11 +39,7 @@ const PostItemStyles = styled.div`
       border-radius: 100rem;
     }
     &-title {
-      font-weight: bold;
-      line-height: 1.5;
-      display: block;
-      font-size: 18px;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
   }
 `;
@@ -58,14 +49,14 @@ const PostItem = () => {
     <PostItemStyles>
       <div className="post-image">
         <img
-          src="https://images.unsplash.com/photo-1570993492881-25240ce854f4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2290&q=80"
+          src="https://images.unsplash.com/photo-1644982652061-df82282e178d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
           alt=""
         />
       </div>
-      <div className="post-category">Kiến thức</div>
-      <h3 className="post-title">
+      <PostCategory>Kiến thức</PostCategory>
+      <PostTitle>
         Hướng dẫn setup phòng cực chill dành cho người mới toàn tập
-      </h3>
+      </PostTitle>
       <div className="post-info">
         <span className="post-time">Mar 23</span>
         <span className="post-dot"></span>
